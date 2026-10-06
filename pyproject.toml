@@ -7,7 +7,12 @@ authors = [
     { name = "Carolyn", email = "cphaase@live.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "numby>=0.2.0",
+    "numpy>=2.5.3",
+    "pillow>=12.3.0",
+    "scipy>=1.18.1",
+]
 
 [project.scripts]
 img-comp-engine = "img_comp_engine:main"
