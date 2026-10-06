@@ -19,11 +19,17 @@ class BrightnessFilter(Filter):
     def apply(self,img :np.ndarray) -> np.ndarray:
         return np.clip(img + self.level, 0.0, 1.0)
 
+class GrayscaleFilter(Filter):
+    def apply(self,img: np.ndarray) -> np.ndarray:
+        gray = (img[:,:, 0] + img[:, :, 1] + img[:, :, 2]) / 3
+        new_img = np.stack((gray, gray, gray),axis = -1)
+        return new_img
 
 image = array_from_file("Images/image1.jpg")
 
 filters = [
-    BrightnessFilter({"level": 0.4}),
+    GrayscaleFilter(),
+    BrightnessFilter({"level": 0.4})
 ]
 
 
