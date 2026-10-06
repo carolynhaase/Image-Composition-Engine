@@ -19,3 +19,4 @@ def show_from_array(arr: np.ndarray):
     '''Affiche un tableau comme une image.'''
     img = array_to_img(arr)
     img.show()
+
