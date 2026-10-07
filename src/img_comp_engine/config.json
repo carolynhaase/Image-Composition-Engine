@@ -4,13 +4,13 @@
          "image": "0_photo.jpg",
          "filters": [
             {
-               "name": "grayscale"
+               "name": "invert"
             },
             {
                "name": "gaussianblur",
                "params": {
-                  "window": 5,
-                  "sigma": 2.0
+                  "window": 41,
+                  "sigma": 8.0
                }
             }
          ]

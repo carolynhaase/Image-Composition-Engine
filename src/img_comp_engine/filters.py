@@ -61,6 +61,10 @@ class GaussianBlurFilter(Filter):
         return np.stack(channels, axis=-1).astype(img.dtype, copy=False)
 
 
+class InvertFilter(Filter):
+    def apply(self,img: np.ndarray) -> np.ndarray:
+        return 1.0 - img
+        
 
     
 

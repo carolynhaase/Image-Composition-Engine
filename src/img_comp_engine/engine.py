@@ -3,7 +3,7 @@ import json
 
 from img_comp_engine.layer import Layer
 from img_comp_engine.images import save_img 
-from img_comp_engine.filters import GaussianBlurFilter, GrayscaleFilter, BrightnessFilter
+from img_comp_engine.filters import GaussianBlurFilter, GrayscaleFilter, BrightnessFilter, InvertFilter
 
 
 def filter_layers(layers: list[Layer], output_dir):
@@ -37,6 +37,9 @@ for layer_config in config["layers"]:
 
         elif filter_config["name"] == "gaussianblur":
             filters.append(GaussianBlurFilter(filter_config["params"]))
+
+        elif filter_config["name"] == "invert":
+                    filters.append(InvertFilter())
 
         else:
             raise ValueError(f"Filtre non pris en charge : {filter_config['name']}")
