@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 
-from img_comp_engine.images import array_from_file, show_from_array
+from img_comp_engine.images import array_from_file, show_from_array, save_img
 
 class Layer:
     def __init__(self,name,filters):
@@ -38,7 +38,6 @@ class GrayscaleFilter(Filter):
         return new_img
 
 
-
 #layer functions
 
 def filter_layers(layers: list[Layer], output_dir):
@@ -47,7 +46,8 @@ def filter_layers(layers: list[Layer], output_dir):
             img = layer.img.copy()
             for filter in layer.filters:
                 img= filter.apply(img)
-            save_img(img, output_dir + "/" + layer.name)
+                save_img(img, output_dir + "/" + layer.name)
+
 
 
 
@@ -57,7 +57,7 @@ def filter_layers(layers: list[Layer], output_dir):
 image = array_from_file("Images/image1.jpg")
 
 #layer list
-#filter_layers([Layer("image.png",[Gaussianblur(4,3), Grayscale()])], Layer("image2.png",Sepia()))
+#filter_layers([Layer("0_photo.jpg",[BrightnessFilter(50), GrayscaleFilter()])], Layer("1_pop_bike.png",Sepia()))
 
 filters = [
     GrayscaleFilter(),
