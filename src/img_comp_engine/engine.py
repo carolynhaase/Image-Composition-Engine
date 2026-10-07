@@ -18,36 +18,36 @@ def filter_layers(layers: list[Layer], output_dir):
 
             save_img(img, str(output_dir / Path(layer.name).name))
 
-with open("config.json", encoding="utf-8") as file:
-    config = json.load(file)
+def run(config_path: str | Path, images_dir: str | Path, output_dir: str | Path) -> None:
+    config_path = Path(config_path)
+    images_dir = Path(images_dir)
 
+    with config_path.open(encoding="utf-8") as file:
+        config = json.load(file)
 
-layers = []
+    layers = []
 
-for layer_config in config["layers"]:
-    filters = []
+    for layer_config in config["layers"]:
+        filters = []
 
-    for filter_config in layer_config["filters"]:
+        for filter_config in layer_config["filters"]:
+            name = filter_config["name"]
+            params = filter_config.get("params", {})
 
-        if filter_config["name"] == "grayscale":
-            filters.append(GrayscaleFilter())
+            if name == "grayscale":
+                filters.append(GrayscaleFilter())
+            elif name == "brightness":
+                filters.append(BrightnessFilter(params))
+            elif name == "gaussianblur":
+                filters.append(GaussianBlurFilter(params))
+            elif name == "invert":
+                filters.append(InvertFilter())
+            elif name == "contrast":
+                filters.append(ContrastFilter(params))
+            else:
+                raise ValueError(f"Filtre non pris en charge : {name}")
 
-        elif filter_config["name"] == "brightness":
-            filters.append(BrightnessFilter(filter_config["params"]))
+        image_path = images_dir / layer_config["image"]
+        layers.append(Layer(image_path, filters))
 
-        elif filter_config["name"] == "gaussianblur":
-            filters.append(GaussianBlurFilter(filter_config["params"]))
-
-        elif filter_config["name"] == "invert":
-                    filters.append(InvertFilter())
-
-        elif filter_config["name"] == "contrast":
-                    filters.append(ContrastFilter(filter_config["params"]))
-
-        else:
-            raise ValueError(f"Filtre non pris en charge : {filter_config['name']}")
-
-    image_path = Path("Images") / layer_config["image"]
-    layers.append(Layer(image_path, filters))
-
-filter_layers(layers, "output")
+    filter_layers(layers, output_dir)
