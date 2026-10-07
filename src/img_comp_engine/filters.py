@@ -9,11 +9,12 @@ from img_comp_engine.images import array_from_file, show_from_array, save_img
 
 
 class Layer:
-    def __init__(self,name,filters):
+    def __init__(self,name,filters,opacity):
           #load the image
-          self.img: np.ndarray = array_from_file(name)
+          self.img:  np.ndarray = array_from_file(name)
           self.filters: list[Filter] = filters
           self.name: str = name
+          self.opacity: float = opacity
           
 
 class Filter(ABC):
@@ -58,7 +59,7 @@ def filter_layers(layers: list[Layer], output_dir):
 #layer list
 #filter_layers([Layer("image.png",[Gaussianblur(4,3), Grayscale()])], Layer("image2.png",Sepia()))
 
-
+"""
 with open("config.json", encoding="utf-8") as file:
     config = json.load(file)
 
@@ -82,7 +83,7 @@ for layer_config in config["layers"]:
     layers.append(Layer(image_path, filters))
 
 filter_layers(layers, "output")
-
+"""
 
 
 
