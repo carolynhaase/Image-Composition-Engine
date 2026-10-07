@@ -5,11 +5,8 @@ import scipy.ndimage
 from pathlib import Path
 import json
 
-
-
-
 from img_comp_engine.images import array_from_file, show_from_array, save_img
-from img_comp_engine.images import array_from_file, show_from_array, save_img
+
 
 class Layer:
     def __init__(self,name,filters):
@@ -85,5 +82,7 @@ for layer_config in config["layers"]:
     layers.append(Layer(image_path, filters))
 
 filter_layers(layers, "output")
+
+
 
 
