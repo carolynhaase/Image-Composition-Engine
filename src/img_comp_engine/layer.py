@@ -1,4 +1,7 @@
-from img_comp_engine.images import array_from_file, show_from_array, save_img
+import numpy as np
+
+from img_comp_engine.images import array_from_file
+from img_comp_engine.filters import Filter
 
 class Layer:
     def __init__(self,name,filters):
