@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from pathlib import Path
 import json
+from scipy.signal import convolve2d
 
 
 from img_comp_engine.layer import Layer
@@ -27,6 +28,39 @@ class GrayscaleFilter(Filter):
         gray = (img[:,:, 0] + img[:, :, 1] + img[:, :, 2]) / 3
         new_img = np.stack((gray, gray, gray),axis = -1)
         return new_img
+
+
+
+class GaussianBlurFilter(Filter):
+    def __init__(self, params):
+        self.window = params["window"]
+        self.sigma = params["sigma"]
+
+        if type(self.window) is not int or self.window <= 0 or self.window % 2 == 0:
+            raise ValueError("window doit être un entier positif impair")
+
+        if self.sigma <= 0:
+            raise ValueError("sigma doit être strictement positif")
+
+    def apply(self, img: np.ndarray) -> np.ndarray:
+        radius = self.window // 2
+        coordinates = np.arange(-radius, radius + 1)
+        x, y = np.meshgrid(coordinates, coordinates)
+
+        kernel = np.exp(-(x**2 + y**2) / (2 * self.sigma**2))
+        kernel /= kernel.sum()
+
+        channels = [
+            convolve2d(
+                img[:, :, channel],
+                kernel,
+                mode="same",
+                boundary="symm",
+            )
+            for channel in range(img.shape[2])
+        ]
+
+        return np.stack(channels, axis=-1).astype(img.dtype, copy=False)
 
 
 #layer functions
@@ -66,6 +100,9 @@ for layer_config in config["layers"]:
 
         elif filter_config["name"] == "brightness":
             filters.append(BrightnessFilter(filter_config["params"]))
+
+        elif filter_config["name"] == "gaussianblur":
+            filters.append(GaussianBlurFilter(filter_config["params"]))
 
         else:
             raise ValueError(f"Filtre non pris en charge : {filter_config['name']}")
