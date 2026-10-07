@@ -1,23 +1,12 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from PIL import Image
-import scipy.ndimage
 from pathlib import Path
 import json
 
 
-
-
-from img_comp_engine.images import array_from_file, show_from_array, save_img
-from img_comp_engine.images import array_from_file, show_from_array, save_img
-
-class Layer:
-    def __init__(self,name,filters):
-          #load the image
-          self.img: np.ndarray = array_from_file(name)
-          self.filters: list[Filter] = filters
-          self.name: str = name
-          
+from img_comp_engine.layer import Layer
+from img_comp_engine.images import save_img
+         
 
 class Filter(ABC):
 
