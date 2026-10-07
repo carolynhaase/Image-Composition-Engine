@@ -2,10 +2,7 @@ layers:
   - image: 0_photo.jpg
     filters:
       - name: grayscale
-      - name: gaussianblur
-        params:
-          window: 5
-          sigma: 2.0
+      - name: invert
   - image: 1_pop_bike.png
     filters:
       - name: gaussianblur
