@@ -10,7 +10,7 @@ layers:
     filters:
       - name: gaussianblur
         params:
-          window: 10
+          window: 11
           sigma: 4.2
     blend: normal
     opacity: 0.32

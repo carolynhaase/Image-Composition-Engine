@@ -4,12 +4,17 @@
          "image": "0_photo.jpg",
          "filters": [
             {
-               "name": "grayscale"
+               "name": "contrast",
+               "params":
+               {
+                  "factor": 3.0
+               }
             },
             {
-               "name": "brightness",
+               "name": "gaussianblur",
                "params": {
-                  "level": 0.4
+                  "window": 5,
+                  "sigma": 2.0
                }
             }
          ]
@@ -18,9 +23,12 @@
          "image": "1_pop_bike.png",
          "filters": [
             {
-               "name": "grayscale"
+               "name": "gaussianblur",
+               "params": {
+                  "window": 11,
+                  "sigma": 4.2
+               }
             }
-      
          ],
          "blend": "normal",
          "opacity": 0.32

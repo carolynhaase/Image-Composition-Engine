@@ -1,21 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from PIL import Image
-import scipy.ndimage
-from pathlib import Path
-import json
-
-from img_comp_engine.images import array_from_file, show_from_array, save_img
-
-
-class Layer:
-    def __init__(self,name,filters,opacity):
-          #load the image
-          self.img:  np.ndarray = array_from_file(name)
-          self.filters: list[Filter] = filters
-          self.name: str = name
-          self.opacity: float = opacity
-          
+from scipy.signal import convolve2d
+         
 
 class Filter(ABC):
 
@@ -23,6 +9,8 @@ class Filter(ABC):
     def apply(self, img: np.ndarray) -> np.ndarray:
         ''' Applique le filtre et renvoie une image sous forme de tableau'''
         raise NotImplementedError
+    
+    
 
 class BrightnessFilter(Filter):
     def __init__(self,params):
@@ -31,6 +19,8 @@ class BrightnessFilter(Filter):
     def apply(self,img :np.ndarray) -> np.ndarray:
         return np.clip(img + self.level, 0.0, 1.0)
 
+    
+
 class GrayscaleFilter(Filter):
     def apply(self,img: np.ndarray) -> np.ndarray:
         gray = (img[:,:, 0] + img[:, :, 1] + img[:, :, 2]) / 3
@@ -38,52 +28,59 @@ class GrayscaleFilter(Filter):
         return new_img
 
 
-#layer functions
 
-def filter_layers(layers: list[Layer], output_dir):
-        output_dir = Path(output_dir)
-        output_dir.mkdir(parents=True, exist_ok=True)
+class GaussianBlurFilter(Filter):
+    def __init__(self, params):
+        self.window = params["window"]
+        self.sigma = params["sigma"]
 
-        for layer in layers:
-            img = layer.img.copy()
+        if type(self.window) is not int or self.window <= 0 or self.window % 2 == 0:
+            raise ValueError("window doit être un entier positif impair")
 
-            for image_filter in layer.filters:
-                img= image_filter.apply(img)
+        if self.sigma <= 0:
+            raise ValueError("sigma doit être strictement positif")
 
-            save_img(img, str(output_dir / Path(layer.name).name))
+    def apply(self, img: np.ndarray) -> np.ndarray:
+        radius = self.window // 2
+        coordinates = np.arange(-radius, radius + 1)
+        x, y = np.meshgrid(coordinates, coordinates)
+
+        kernel = np.exp(-(x**2 + y**2) / (2 * self.sigma**2))
+        kernel /= kernel.sum()
+
+        channels = [
+            convolve2d(
+                img[:, :, channel],
+                kernel,
+                mode="same",
+                boundary="symm",
+            )
+            for channel in range(img.shape[2])
+        ]
+
+        return np.stack(channels, axis=-1).astype(img.dtype, copy=False)
 
 
-          
+class InvertFilter(Filter):
+    def apply(self,img: np.ndarray) -> np.ndarray:
+        return 1.0 - img
 
 
-#layer list
-#filter_layers([Layer("image.png",[Gaussianblur(4,3), Grayscale()])], Layer("image2.png",Sepia()))
+class ContrastFilter(Filter):
+    def __init__(self,params):
+        self.factor = params["factor"]
 
-"""
-with open("config.json", encoding="utf-8") as file:
-    config = json.load(file)
+        if self.factor <0:
+            raise ValueError("factor doit être positif ou nul ")
+        
+    def apply(self,img: np.ndarray) -> np.ndarray :
+        return np.clip((img - 0.5) * self.factor + 0.5, 0.0, 1.0)
+    
 
-layers = []
 
-for layer_config in config["layers"]:
-    filters = []
 
-    for filter_config in layer_config["filters"]:
 
-        if filter_config["name"] == "grayscale":
-            filters.append(GrayscaleFilter())
 
-        elif filter_config["name"] == "brightness":
-            filters.append(BrightnessFilter(filter_config["params"]))
-
-        else:
-            raise ValueError(f"Filtre non pris en charge : {filter_config['name']}")
-
-    image_path = Path("Images") / layer_config["image"]
-    layers.append(Layer(image_path, filters))
-
-filter_layers(layers, "output")
-"""
 
 
 
