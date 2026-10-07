@@ -5,7 +5,8 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 import scipy.ndimage
 
-from img_comp_engine.filters import Layer, save_img, show_from_array, array_from_file
+from img_comp_engine.images import save_img, show_from_array, array_from_file
+from img_comp_engine.layer import Layer
 
 class Blend(ABC):
     @abstractmethod
@@ -24,6 +25,7 @@ class DifferenceBlend(Blend):
         save_img(img, str(output_dir / f"blend{layer.name}.png"))
 
 blend_layers([Layer("0_photo.jpg",,1), Layer("1_pop_bike.png",,.32),1])"""
+
 img_dir = Path(__file__).parent / "Images"
 img = DifferenceBlend().apply(array_from_file(img_dir /"0_photo.jpg"), array_from_file(img_dir / "1_pop_bike.png"), .75)
 show_from_array(img)
