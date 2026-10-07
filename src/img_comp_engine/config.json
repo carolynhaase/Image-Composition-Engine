@@ -1,7 +1,7 @@
 {
    "layers": [
       {
-         "image": "photo.jpg",
+         "image": "0_photo.jpg",
          "filters": [
             {
                "name": "grayscale"
@@ -16,7 +16,7 @@
          ]
       },
       {
-         "image": "1_velo.png",
+         "image": "1_pop_bike.png",
          "filters": [
             {
                "name": "gaussianblur",
@@ -30,7 +30,7 @@
          "opacity": 0.32
       },
       {
-         "image": "2_mur.png",
+         "image": "2_wall.png",
          "filters": [],
          "blend": "lighten",
          "opacity": 1.0
