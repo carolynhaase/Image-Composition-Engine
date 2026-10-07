@@ -3,11 +3,12 @@ import numpy as np
 from PIL import Image
 import scipy.ndimage
 from pathlib import Path
+import json
 
 
 
 
-from img_comp_engine.images import array_from_file, show_from_array
+from img_comp_engine.images import array_from_file, show_from_array, save_img
 
 class Layer:
     def __init__(self,name,filters):
@@ -42,32 +43,47 @@ class GrayscaleFilter(Filter):
 #layer functions
 
 def filter_layers(layers: list[Layer], output_dir):
-        output_dir = "output"
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
         for layer in layers:
             img = layer.img.copy()
-            for filter in layer.filters:
-                img= filter.apply(img)
-            save_img(img, output_dir + "/" + layer.name)
 
+            for image_filter in layer.filters:
+                img= image_filter.apply(img)
+
+            save_img(img, str(output_dir / Path(layer.name).name))
 
 
           
 
 
-image = array_from_file("Images/image1.jpg")
-
 #layer list
 #filter_layers([Layer("image.png",[Gaussianblur(4,3), Grayscale()])], Layer("image2.png",Sepia()))
 
-filters = [
-    GrayscaleFilter(),
-    BrightnessFilter({"level": 0.4})
-]
+
+with open("config.json", encoding="utf-8") as file:
+    config = json.load(file)
+
+layers = []
+
+for layer_config in config["layers"]:
+    filters = []
+
+    for filter_config in layer_config["filters"]:
+
+        if filter_config["name"] == "grayscale":
+            filters.append(GrayscaleFilter())
+
+        elif filter_config["name"] == "brightness":
+            filters.append(BrightnessFilter(filter_config["params"]))
+
+        else:
+            raise ValueError(f"Filtre non pris en charge : {filter_config['name']}")
+
+    image_path = Path("Images") / layer_config["image"]
+    layers.append(Layer(image_path, filters))
+
+filter_layers(layers, "output")
 
 
-for image_filter in filters:
-    image = image_filter.apply(image)
-
-im_orig = array_from_file("Images/image1.jpg")
-show_from_array(im_orig)
-show_from_array(image)
