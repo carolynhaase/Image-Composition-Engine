@@ -4,13 +4,17 @@
          "image": "0_photo.jpg",
          "filters": [
             {
-               "name": "invert"
+               "name": "contrast",
+               "params":
+               {
+                  "factor": 3.0
+               }
             },
             {
                "name": "gaussianblur",
                "params": {
-                  "window": 41,
-                  "sigma": 8.0
+                  "window": 5,
+                  "sigma": 2.0
                }
             }
          ]

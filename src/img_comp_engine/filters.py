@@ -64,9 +64,19 @@ class GaussianBlurFilter(Filter):
 class InvertFilter(Filter):
     def apply(self,img: np.ndarray) -> np.ndarray:
         return 1.0 - img
-        
 
+
+class ContrastFilter(Filter):
+    def __init__(self,params):
+        self.factor = params["factor"]
+
+        if self.factor <0:
+            raise ValueError("factor doit être positif ou nul ")
+        
+    def apply(self,img: np.ndarray) -> np.ndarray :
+        return np.clip((img - 0.5) * self.factor + 0.5, 0.0, 1.0)
     
+
 
 
 
