@@ -20,3 +20,5 @@ def show_from_array(arr: np.ndarray):
     img = array_to_img(arr)
     img.show()
 
+
+    
