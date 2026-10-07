@@ -56,6 +56,11 @@ def np_img_to_pil(img):
     pil_img = Image.fromarray(normalized_img)
     return pil_img
           
+class GrayscaleFilter(Filter):
+    def apply(self,img: np.ndarray) -> np.ndarray:
+        gray = (img[:,:, 0] + img[:, :, 1] + img[:, :, 2]) / 3
+        new_img = np.stack((gray, gray, gray),axis = -1)
+        return new_img
 
 image = array_from_file("Images/image1.jpg")
 
@@ -63,7 +68,8 @@ image = array_from_file("Images/image1.jpg")
 #filter_layers([Layer("image.png",[Gaussianblur(4,3), Greyscale()])], Layer("image2.png",Sepia()))
 
 filters = [
-    BrightnessFilter({"level": 0.4}),
+    GrayscaleFilter(),
+    BrightnessFilter({"level": 0.4})
 ]
 
 
