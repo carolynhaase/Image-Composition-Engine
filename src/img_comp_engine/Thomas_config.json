@@ -1,0 +1,29 @@
+
+  {
+  "layers": [
+    {
+      "path_image": "0_photo.jpg",
+      "filtre": [
+        {
+          "filter_name": "Gaussianblur",
+          "filter_param":{
+            "window" : 80,
+            "sigma": 3
+          }
+        }
+      ],
+      "blend": "DifferenceBlend",
+      "opacity": 1
+    },
+    {
+        "path_image" : "1_pop_bike",
+        "filtre" : [
+            {
+                "filter_name" : "Sepia"
+            }
+        ],
+        "blend" : "DifferenceBlend",
+        "opacity" : 0.5
+    }
+  ]
+}
