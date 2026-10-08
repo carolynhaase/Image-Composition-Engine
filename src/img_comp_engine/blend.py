@@ -29,6 +29,12 @@ class MultiplyBlend(Blend):
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         multiplied = background * image
         return background * (1 - opacity) + multiplied * opacity
+
+class LightenBlend(Blend):
+     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
+        lightened = np.maximum(background, image)
+        return background * (1 - opacity) + lightened * opacity
+          
     
 """
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, output_dir: str | Path) -> np.ndarray:
@@ -46,6 +52,8 @@ def blend_layers(background: np.ndarray, image: np.ndarray, opacity:float, blend
              blend = DifferenceBlend()
         elif blend_mode == "multiply":
              blend = MultiplyBlend()
+        elif blend_mode == "lighten":
+             blend = LightenBlend()
         else:
              raise ValueError(f"Mode de mélange non pris en charge :{blend_mode}")
         

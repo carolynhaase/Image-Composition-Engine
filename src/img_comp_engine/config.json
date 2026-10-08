@@ -31,7 +31,7 @@
     {
       "image": "2_wall.png",
       "filters": [],
-      "blend": "multiply",
+      "blend": "lighten",
       "opacity": 0.5
     }
   ]
