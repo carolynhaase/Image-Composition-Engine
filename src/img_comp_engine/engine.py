@@ -22,6 +22,15 @@ def filter_layers(layers: list[Layer], output_dir):
         if composition is None:
             composition = img
         else:
+            if img.shape != composition.shape:
+                expected_height, expected_width = composition.shape[:2]
+                actual_height, actual_width = img.shape[:2]
+
+                raise ValueError(
+                    f"Dimensions incompatibles pour la couche "
+                    f"'{Path(layer.name).name}'"
+                )
+
             composition = blend_layers(composition, img, layer.opacity, layer.blend)
 
     if composition is None:
