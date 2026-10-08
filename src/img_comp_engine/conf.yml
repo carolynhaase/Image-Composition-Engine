@@ -1,19 +1,19 @@
 layers:
-  - image: 0_photo.jpg
-    filters:
-      - name: grayscale
-      - name: contrast
-        params:
-          factor: 5
-  - image: 1_pop_bike.png
+  - image: landscape.jpg
     filters:
       - name: gaussianblur
         params:
           window: 11
           sigma: 4.2
-    blend: difference
+  - image: people.jpg
+    filters:
+      - name: contrast
+        params:
+          factor: 7
+    blend: normal
+    opacity: 0.7
+  - image: birds.jpg
+    filters:
+      - name: invert
+    blend: multiply
     opacity: 0.32
-  - image: 2_wall.png
-    filters: []
-    blend: lighten
-    opacity: 0.50
