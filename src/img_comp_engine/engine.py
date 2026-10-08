@@ -1,10 +1,37 @@
 from pathlib import Path
 import json
+import numpy as np
 
 from img_comp_engine.layer import Layer
 from img_comp_engine.images import save_img 
-from img_comp_engine.blend import blend_layers
-from img_comp_engine.filters import GaussianBlurFilter, GrayscaleFilter, BrightnessFilter, InvertFilter, ContrastFilter
+
+from img_comp_engine.blend import (
+    NormalBlend,
+    DifferenceBlend,
+    MultiplyBlend,
+    LightenBlend
+)
+from img_comp_engine.filters import (
+    GaussianBlurFilter, 
+    GrayscaleFilter, 
+    BrightnessFilter, 
+    InvertFilter,
+    ContrastFilter
+)
+
+def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, blend_mode: str = "normal") -> np.ndarray:
+    if blend_mode == "normal":
+        blend = NormalBlend()
+    elif blend_mode == "difference":
+        blend = DifferenceBlend()
+    elif blend_mode == "multiply":
+        blend = MultiplyBlend()
+    elif blend_mode == "lighten":
+        blend = LightenBlend()
+    else:
+        raise ValueError(f"Mode de mélange non pris en charge : {blend_mode}")
+
+    return blend.apply(background, image, opacity)
 
 
 def filter_layers(layers: list[Layer], output_dir):

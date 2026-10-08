@@ -25,11 +25,11 @@
           }
         }
       ],
-      "blend": "normal",
+      "blend": "difference",
       "opacity": 0.32
     },
     {
-      "image": "people.jpg",
+      "image": "2_wall.png",
       "filters": [],
       "blend": "lighten",
       "opacity": 0.5
