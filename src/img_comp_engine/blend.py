@@ -20,11 +20,13 @@ class DifferenceBlend(Blend):
         return background * (1-opacity) + difference * opacity
 
 class MultiplyBlend(Blend):
+    #takes the pixel values from each image and multiplies them
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         multiplied = background * image
         return background * (1 - opacity) + multiplied * opacity
 
 class LightenBlend(Blend):
+     #takes the pixels above the opacity value and lightens them
      def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         lightened = np.maximum(background, image)
         return background * (1 - opacity) + lightened * opacity

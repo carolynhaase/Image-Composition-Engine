@@ -20,6 +20,7 @@ from img_comp_engine.filters import (
 )
 
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, blend_mode: str = "normal") -> np.ndarray:
+    #logic to define and chose the blend mode
     if blend_mode == "normal":
         blend = NormalBlend()
     elif blend_mode == "difference":
@@ -39,7 +40,7 @@ def filter_layers(layers: list[Layer], output_dir):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     composition = None
-
+    
     for layer in layers:
         img = layer.img.copy()
 
