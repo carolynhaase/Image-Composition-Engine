@@ -48,6 +48,6 @@ def run(config_path: str | Path, images_dir: str | Path, output_dir: str | Path)
                 raise ValueError(f"Filtre non pris en charge : {name}")
 
         image_path = images_dir / layer_config["image"]
-        layers.append(Layer(image_path, filters))
+        layers.append(Layer(image_path, filters, layer_config.get("opacity", 1.0)))
 
     filter_layers(layers, output_dir)
