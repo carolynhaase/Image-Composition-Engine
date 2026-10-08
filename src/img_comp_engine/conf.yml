@@ -4,7 +4,7 @@ layers:
       - name: grayscale
       - name: contrast
         params:
-          factor: 10
+          factor: 5
   - image: 1_pop_bike.png
     filters:
       - name: gaussianblur
@@ -15,5 +15,5 @@ layers:
     opacity: 0.32
   - image: 2_wall.png
     filters: []
-    blend: lighten
-    opacity: 1.0
+    blend: normal
+    opacity: 0.50

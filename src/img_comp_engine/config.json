@@ -9,7 +9,7 @@
         {
           "name": "contrast",
           "params": {
-            "factor": 10
+            "factor": 5
           }
         }
       ]
@@ -31,8 +31,8 @@
     {
       "image": "2_wall.png",
       "filters": [],
-      "blend": "lighten",
-      "opacity": 1.0
+      "blend": "normal",
+      "opacity": 0.5
     }
   ]
 }

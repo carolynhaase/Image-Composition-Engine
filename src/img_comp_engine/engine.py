@@ -3,20 +3,33 @@ import json
 
 from img_comp_engine.layer import Layer
 from img_comp_engine.images import save_img 
+from img_comp_engine.blend import blend_layers
 from img_comp_engine.filters import GaussianBlurFilter, GrayscaleFilter, BrightnessFilter, InvertFilter, ContrastFilter
 
 
 def filter_layers(layers: list[Layer], output_dir):
-        output_dir = Path(output_dir)
-        output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-        for layer in layers:
-            img = layer.img.copy()
+    composition = None
 
-            for image_filter in layer.filters:
-                img= image_filter.apply(img)
+    for layer in layers:
+        img = layer.img.copy()
 
-            save_img(img, str(output_dir / Path(layer.name).name))
+        for image_filter in layer.filters:
+            img = image_filter.apply(img)
+
+        if composition is None:
+            composition = img
+        else:
+            composition = blend_layers(composition, img, layer.opacity)
+
+    if composition is None:
+        raise ValueError("La configuration ne contient aucune couche à composer.")
+
+    save_img(composition, str(output_dir / "composition.png"))
+
+
 
 def run(config_path: str | Path, images_dir: str | Path, output_dir: str | Path) -> None:
     config_path = Path(config_path)
