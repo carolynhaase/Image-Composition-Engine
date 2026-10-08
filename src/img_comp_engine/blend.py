@@ -24,6 +24,11 @@ class DifferenceBlend(Blend):
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         difference = np.abs(background - image)
         return background * (1-opacity) + difference * opacity
+
+class MultiplyBlend(Blend):
+    def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
+        multiplied = background * image
+        return background * (1 - opacity) + multiplied * opacity
     
 """
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, output_dir: str | Path) -> np.ndarray:
@@ -39,6 +44,8 @@ def blend_layers(background: np.ndarray, image: np.ndarray, opacity:float, blend
              blend = NormalBlend()
         elif blend_mode == "difference":
              blend = DifferenceBlend()
+        elif blend_mode == "multiply":
+             blend = MultiplyBlend()
         else:
              raise ValueError(f"Mode de mélange non pris en charge :{blend_mode}")
         
