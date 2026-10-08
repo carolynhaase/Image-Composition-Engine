@@ -22,7 +22,7 @@ def filter_layers(layers: list[Layer], output_dir):
         if composition is None:
             composition = img
         else:
-            composition = blend_layers(composition, img, layer.opacity)
+            composition = blend_layers(composition, img, layer.opacity, layer.blend)
 
     if composition is None:
         raise ValueError("La configuration ne contient aucune couche à composer.")
@@ -61,6 +61,7 @@ def run(config_path: str | Path, images_dir: str | Path, output_dir: str | Path)
                 raise ValueError(f"Filtre non pris en charge : {name}")
 
         image_path = images_dir / layer_config["image"]
-        layers.append(Layer(image_path, filters, layer_config.get("opacity", 1.0)))
+        layers.append(Layer(image_path, filters, layer_config.get("opacity", 1.0), layer_config.get("blend", "normal"))
+)
 
     filter_layers(layers, output_dir)

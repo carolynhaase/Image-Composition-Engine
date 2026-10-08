@@ -22,7 +22,8 @@ class NormalBlend(Blend):
 class DifferenceBlend(Blend):
     #display the image with specific opacity over the background
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
-        return background - opacity *image
+        difference = np.abs(background - image)
+        return background * (1-opacity) + difference * opacity
     
 """
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, output_dir: str | Path) -> np.ndarray:
@@ -33,8 +34,15 @@ def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, outp
         #save_img(img, str(output_dir / f"blend{layer.name}.png"))
 """
 
-def blend_layers(background: np.ndarray, image: np.ndarray, opacity:float) -> np.ndarray:
-        return NormalBlend().apply(background,image,opacity)
+def blend_layers(background: np.ndarray, image: np.ndarray, opacity:float, blend_mode: str = "normal") -> np.ndarray:
+        if blend_mode == "normal":
+             blend = NormalBlend()
+        elif blend_mode == "difference":
+             blend = DifferenceBlend()
+        else:
+             raise ValueError(f"Mode de mélange non pris en charge :{blend_mode}")
+        
+        return blend.apply(background,image,opacity)
 
 #blend_layers([Layer("0_photo.jpg",(),1), Layer("1_pop_bike.png",(),.32),1])
 
