@@ -87,6 +87,7 @@ class ContrastFilter(Filter):
         return np.clip((img - 0.5) * self.factor + 0.5, 0.0, 1.0)
 
 
+
 """
 #filters from Chloe and Pierre
 
