@@ -18,7 +18,10 @@ class BrightnessFilter(Filter):
     def __init__(self,params):
         self.level = params["level"]
 
+        if "level" not in params:
+            raise ValueError ("must specify brightness level")
     def apply(self,img :np.ndarray) -> np.ndarray:
+        
         return np.clip(img + self.level, 0.0, 1.0)
 
     
@@ -36,11 +39,18 @@ class GaussianBlurFilter(Filter):
         self.window = params["window"]
         self.sigma = params["sigma"]
 
+        if "window" not in params:
+            raise ValueError ("must specify window for Gaussian blur")
+
+        if "sigma" not in params:
+            raise ValueError ("must specify sigma for Gaussian blur")
+                        
         if not isinstance(self.window, int) or self.window <= 0 or self.window % 2 == 0:
-            raise ValueError("window doit être un entier positif impair")
+            raise ValueError("window must be possitive and odd")
 
         if self.sigma <= 0:
-            raise ValueError("sigma doit être strictement positif")
+            raise ValueError("sigma must be positive")
+        
 
     def apply(self, img: np.ndarray) -> np.ndarray:
         radius = self.window // 2
@@ -65,8 +75,11 @@ class ContrastFilter(Filter):
     def __init__(self,params):
         self.factor = params["factor"]
 
+        if "factor" not in params:
+            raise ValueError ("must specify contrast factor")
         if self.factor <0:
-            raise ValueError("factor doit être positif ou nul ")
+            raise ValueError("factor must be greater than or equal to 0")
+        
         
     def apply(self,img: np.ndarray) -> np.ndarray :
         return np.clip((img - 0.5) * self.factor + 0.5, 0.0, 1.0)
