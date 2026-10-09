@@ -139,3 +139,9 @@ The program checks your configuration and stops with a clear message instead of 
 ## Test another filters file 
 
 Our trinome was Chloe/Pierre and Hugo/Thomas
+
+To use the additional filters (from the other team) simply disactivate the original filters
+and activate the other team's filters in the filter.py file. Then in main.py, activate the 
+alternative .json path and disactivate the original.  Once the Thomas_config file is modified
+for the images, filters, and parameters you want, simply run the engine.py file and your 
+new image will be saved to the output folder.
