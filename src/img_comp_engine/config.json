@@ -7,7 +7,7 @@
           "name": "gaussianblur",
           "params": {
             "window": 11,
-            "sigma": 4.2
+            "sigma": 3.0
           }
         }
       ]
@@ -18,12 +18,12 @@
         {
           "name": "contrast",
           "params": {
-            "factor": 7
+            "factor": 6
           }
         }
       ],
-      "blend": "normal",
-      "opacity": 0.7
+      "blend": "difference",
+      "opacity": 0.4
     },
     {
       "image": "birds.jpg",

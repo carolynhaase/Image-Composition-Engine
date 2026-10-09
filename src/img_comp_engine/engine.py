@@ -19,6 +19,7 @@ from img_comp_engine.filters import (
     ContrastFilter
 )
 
+
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, blend_mode: str = "normal") -> np.ndarray:
     #logic to define and chose the blend mode
     if blend_mode == "normal":
