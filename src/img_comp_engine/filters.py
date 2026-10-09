@@ -1,4 +1,4 @@
-"""
+
 from abc import ABC, abstractmethod
 import numpy as np
 from scipy.ndimage import convolve1d
@@ -85,7 +85,9 @@ class ContrastFilter(Filter):
         
     def apply(self,img: np.ndarray) -> np.ndarray :
         return np.clip((img - 0.5) * self.factor + 0.5, 0.0, 1.0)
-    """
+
+
+"""
 #filters from Chloe and Pierre
 import math
 from pathlib import Path
@@ -371,7 +373,7 @@ FILTER_CLASSES = {
 }
 
 
-
+"""
 
 
 
