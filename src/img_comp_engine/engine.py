@@ -65,7 +65,7 @@ def filter_layers(layers: list[Layer], output_dir):
  
                 raise ValueError(
                     f"Incompatible dimensions for layer "
-                    f"'{Path(layer.name).name}' : extended "
+                    f"'{Path(layer.name).name}': expected "
                     f"{expected_width}x{expected_height}, got "
                     f"{actual_width}x{actual_height}"
                 )

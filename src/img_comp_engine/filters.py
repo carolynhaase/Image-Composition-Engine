@@ -9,7 +9,7 @@ class Filter(ABC):
 
     @abstractmethod
     def apply(self, img: np.ndarray) -> np.ndarray:
-        ''' Applique le filtre et renvoie une image sous forme de tableau'''
+        ''' Applies the filter and returns the image as an array. '''
         raise NotImplementedError
     
     
@@ -29,7 +29,7 @@ class BrightnessFilter(Filter):
 
 class GrayscaleFilter(Filter):
     def apply(self,img: np.ndarray) -> np.ndarray:
-        # moyenne pondérée : l'oeil voit plus le vert que le bleu
+        # Weighted average: the eye is more sensitive to green than to blue
         gray = 0.299 * img[:, :, 0] + 0.587 * img[:, :, 1] + 0.114 * img[:, :, 2]
         return np.stack((gray, gray, gray), axis=-1)
 
@@ -57,7 +57,7 @@ class GaussianBlurFilter(Filter):
         radius = self.window // 2
         x = np.arange(-radius, radius + 1)
 
-        # noyau 1D : on floute d'abord les lignes, puis les colonnes
+        # AD kernerl: blur the rows first, then the columns
         kernel = np.exp(-(x**2) / (2 * self.sigma**2))
         kernel /= kernel.sum()
 
