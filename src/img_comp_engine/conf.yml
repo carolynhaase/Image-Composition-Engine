@@ -7,9 +7,9 @@ layers:
           sigma: 3.0
   - image: people.jpg
     filters:
-      - name: contrast
+      - name: brightness
         params:
-          factor: 6
+          level: 0
     blend: difference
     opacity: 0.4
   - image: birds.jpg

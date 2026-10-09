@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from scipy.signal import convolve2d
+from scipy.ndimage import convolve1d
          
 
 class Filter(ABC):
+    def __init__(self,params=None):
+        pass
 
     @abstractmethod
     def apply(self, img: np.ndarray) -> np.ndarray:
@@ -26,9 +28,9 @@ class BrightnessFilter(Filter):
 
 class GrayscaleFilter(Filter):
     def apply(self,img: np.ndarray) -> np.ndarray:
-        gray = (img[:,:, 0] + img[:, :, 1] + img[:, :, 2]) / 3
-        new_img = np.stack((gray, gray, gray),axis = -1)
-        return new_img
+        # moyenne pondérée : l'oeil voit plus le vert que le bleu
+        gray = 0.299 * img[:, :, 0] + 0.587 * img[:, :, 1] + 0.114 * img[:, :, 2]
+        return np.stack((gray, gray, gray), axis=-1)
 
 
 
@@ -37,6 +39,7 @@ class GaussianBlurFilter(Filter):
         self.window = params["window"]
         self.sigma = params["sigma"]
 
+<<<<<<< HEAD
         if "window" not in params:
             raise ValueError ("must specify window for Gaussian blur")
 
@@ -45,6 +48,10 @@ class GaussianBlurFilter(Filter):
                         
         if type(self.window) is not int or self.window <= 0 or self.window % 2 == 0:
             raise ValueError("window must be possitive and odd")
+=======
+        if not isinstance(self.window, int) or self.window <= 0 or self.window % 2 == 0:
+            raise ValueError("window doit être un entier positif impair")
+>>>>>>> 95f169e4206b8f45a89d49aff18a301fe3a296a6
 
         if self.sigma <= 0:
             raise ValueError("sigma must be positive")
@@ -52,23 +59,16 @@ class GaussianBlurFilter(Filter):
 
     def apply(self, img: np.ndarray) -> np.ndarray:
         radius = self.window // 2
-        coordinates = np.arange(-radius, radius + 1)
-        x, y = np.meshgrid(coordinates, coordinates)
+        x = np.arange(-radius, radius + 1)
 
-        kernel = np.exp(-(x**2 + y**2) / (2 * self.sigma**2))
+        # noyau 1D : on floute d'abord les lignes, puis les colonnes
+        kernel = np.exp(-(x**2) / (2 * self.sigma**2))
         kernel /= kernel.sum()
 
-        channels = [
-            convolve2d(
-                img[:, :, channel],
-                kernel,
-                mode="same",
-                boundary="symm",
-            )
-            for channel in range(img.shape[2])
-        ]
+        blurred = convolve1d(img, kernel, axis=0, mode="reflect")
+        blurred = convolve1d(blurred, kernel, axis=1, mode="reflect")
+        return blurred
 
-        return np.stack(channels, axis=-1).astype(img.dtype, copy=False)
 
 
 class InvertFilter(Filter):
