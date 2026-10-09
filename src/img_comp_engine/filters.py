@@ -39,19 +39,14 @@ class GaussianBlurFilter(Filter):
         self.window = params["window"]
         self.sigma = params["sigma"]
 
-<<<<<<< HEAD
         if "window" not in params:
             raise ValueError ("must specify window for Gaussian blur")
 
         if "sigma" not in params:
             raise ValueError ("must specify sigma for Gaussian blur")
                         
-        if type(self.window) is not int or self.window <= 0 or self.window % 2 == 0:
-            raise ValueError("window must be possitive and odd")
-=======
         if not isinstance(self.window, int) or self.window <= 0 or self.window % 2 == 0:
-            raise ValueError("window doit être un entier positif impair")
->>>>>>> 95f169e4206b8f45a89d49aff18a301fe3a296a6
+            raise ValueError("window must be possitive and odd")
 
         if self.sigma <= 0:
             raise ValueError("sigma must be positive")
