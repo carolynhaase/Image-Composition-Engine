@@ -8,25 +8,24 @@ class Blend(ABC):
         raise NotImplementedError
 
 class NormalBlend(Blend):
-    #display the image over the background (no opacity)
-    #same as using DifferenceBlend with 100% opacity
+    # Puts the image over the background, according to the opacity
     def apply(self, background: np.ndarray, image: np.ndarray,opacity:float) -> np.ndarray:
         return background *(1-opacity)+image*opacity
     
 class DifferenceBlend(Blend):
-    #display the image with specific opacity over the background
+    # Takes the absolute difference between background and image
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         difference = np.abs(background - image)
         return background * (1-opacity) + difference * opacity
 
 class MultiplyBlend(Blend):
-    #takes the pixel values from each image and multiplies them
+    # Multiplies background and image pixel by pixel (darkens)
     def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         multiplied = background * image
         return background * (1 - opacity) + multiplied * opacity
 
 class LightenBlend(Blend):
-     #takes the pixels above the opacity value and lightens them
+     # Keeps the lighter of the two pixels, pixel by pixel
      def apply(self, background: np.ndarray, image: np.ndarray, opacity: float) -> np.ndarray:
         lightened = np.maximum(background, image)
         return background * (1 - opacity) + lightened * opacity

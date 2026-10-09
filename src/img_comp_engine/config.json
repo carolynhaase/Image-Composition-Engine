@@ -1,7 +1,7 @@
 {
   "layers": [
     {
-      "image": "landscape.jpg",
+      "image": "stones.jpg",
       "filters": [
         {
           "name": "gaussianblur",
@@ -13,7 +13,7 @@
       ]
     },
     {
-      "image": "people.jpg",
+      "image": "colors.jpg",
       "filters": [
         {
           "name": "brightness",
@@ -26,14 +26,14 @@
       "opacity": 0.4
     },
     {
-      "image": "birds.jpg",
+      "image": "animal.jpg",
       "filters": [
         {
           "name": "invert"
         }
       ],
-      "blend": "multiply",
-      "opacity": 0.32
+      "blend": "normal",
+      "opacity": 0.7
     }
   ]
 }

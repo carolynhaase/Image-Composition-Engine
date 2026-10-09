@@ -17,8 +17,8 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except ValueError as error:
+    except (ValueError, FileNotFoundError) as error:
         red = "\033[1;31m" if sys.stderr.isatty() else ""
         reset = "\033[0m" if red else ""
-        print(f"{red}Erreur : {error}{reset}", file=sys.stderr)
+        print(f"{red}Error: {error}{reset}", file=sys.stderr)
         raise SystemExit(1)
