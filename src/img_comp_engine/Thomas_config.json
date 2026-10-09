@@ -1,29 +1,50 @@
-
-  {
-  "layers": [
-    {
-      "path_image": "0_photo.jpg",
-      "filtre": [
+{
+    "layers": [
         {
-          "filter_name": "Gaussianblur",
-          "filter_param":{
-            "window" : 80,
-            "sigma": 3
-          }
+            "image": "landscape.jpeg",
+            "filters": [
+                {
+                    "name": "blend",
+                    "params": {
+                        "image2": "people.jpeg",
+                        "intensity": 50
+                    }
+                },
+                {
+                    "name": "contrast",
+                    "params": {
+                        // 50 conserve le contraste original ; 0 le réduit au minimum.
+                        "intensity": 50
+                    }
+                },
+                {
+                    "name": "saturation",
+                    "params": {
+                        // 50 conserve la saturation originale ; 0 passe en niveaux de gris.
+                        "intensity": 50
+                    }
+                },
+                {
+                    "name": "selectivecolor",
+                    "params": {
+                        // [R, G, B] - couleur à sélectionner (de 0 à 255 pour chaque composante)
+                        "color": [0, 255, 0],
+                        // 0 le réduit au minimum ; 100 le maximise
+                        "intensity": 0
+                    }
+                },
+                {
+                    "name": "centercirclefocus",
+                    "params": {
+                        // 0 le réduit au minimum ; 100 le maximise
+                        "intensity": 0,
+                        // Taille du cercle de mise au point (0 à 100)
+                        "focus_size": 100
+                    }
+                }
+            ],
+            "blend": "normal",
+            "opacity": 1.0
         }
-      ],
-      "blend": "DifferenceBlend",
-      "opacity": 1
-    },
-    {
-        "path_image" : "1_pop_bike",
-        "filtre" : [
-            {
-                "filter_name" : "Sepia"
-            }
-        ],
-        "blend" : "DifferenceBlend",
-        "opacity" : 0.5
-    }
-  ]
+    ]
 }
