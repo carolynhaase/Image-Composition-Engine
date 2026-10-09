@@ -89,6 +89,7 @@ class ContrastFilter(Filter):
 
 """
 #filters from Chloe and Pierre
+
 import math
 from pathlib import Path
 from abc import ABC, abstractmethod

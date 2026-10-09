@@ -1,12 +1,12 @@
 {
-    "layers": [
-        {
-            "image": "landscape.jpeg",
-            "filters": [
+  "layers": [
+    {
+      "image": "stones.jpg",
+             "filters": [
                 {
                     "name": "blend",
                     "params": {
-                        "image2": "people.jpeg",
+                        "image2": "animal.jpg",
                         "intensity": 50
                     }
                 },
