@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from scipy.signal import convolve1d
+from scipy.ndimage import convolve1d
          
 
 class Filter(ABC):
