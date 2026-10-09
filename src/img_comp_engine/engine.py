@@ -37,7 +37,7 @@ FILTERS = {
 
 def blend_layers(background: np.ndarray, image: np.ndarray, opacity: float, blend_mode: str = "normal") -> np.ndarray:
     if blend_mode not in BLENDS:
-        raise ValueError(f"Mode de mélange non pris en charge : {blend_mode}")
+        raise ValueError(f"Unsupported blend mode : {blend_mode}")
  
     blend = BLENDS[blend_mode]()
     return blend.apply(background, image, opacity)
@@ -64,16 +64,16 @@ def filter_layers(layers: list[Layer], output_dir):
                 actual_height, actual_width = img.shape[:2]
  
                 raise ValueError(
-                    f"Dimensions incompatibles pour la couche "
-                    f"'{Path(layer.name).name}' : attendu "
-                    f"{expected_width}x{expected_height}, reçu "
+                    f"Incompatible dimensions for layer "
+                    f"'{Path(layer.name).name}' : extended "
+                    f"{expected_width}x{expected_height}, got "
                     f"{actual_width}x{actual_height}"
                 )
  
             composition = blend_layers(composition, img, layer.opacity, layer.blend)
  
     if composition is None:
-        raise ValueError("La configuration ne contient aucune couche à composer.")
+        raise ValueError("The configuration contains no layers to compose.")
  
     save_img(composition, str(output_dir / "composition.png"))
 
@@ -96,13 +96,13 @@ def run(config_path: str | Path, images_dir: str | Path, output_dir: str | Path)
             params = filter_config.get("params", {})
  
             if name not in FILTERS:
-                raise ValueError(f"Filtre non pris en charge : {name}")
+                raise ValueError(f"Unsupported filter : {name}")
  
             filters.append(FILTERS[name](params))
  
         opacity = layer_config.get("opacity", 1.0)
         if not 0 <= opacity <= 1:
-            raise ValueError(f"L'opacité doit être entre 0 et 1 (reçu {opacity})")
+            raise ValueError(f"Opacity must be between 0 and 1 (got {opacity})")
  
         image_path = images_dir / layer_config["image"]
         blend = layer_config.get("blend", "normal")
