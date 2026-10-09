@@ -15,11 +15,12 @@ class Filter(ABC):
     
 
 class BrightnessFilter(Filter):
-    def __init__(self,params):
-        self.level = params["level"]
-
+    def __init__(self, params):
         if "level" not in params:
-            raise ValueError ("must specify brightness level")
+            raise ValueError("must specify brightness level")
+
+        self.level = params["level"]
+        
     def apply(self,img :np.ndarray) -> np.ndarray:
         
         return np.clip(img + self.level, 0.0, 1.0)
@@ -36,17 +37,17 @@ class GrayscaleFilter(Filter):
 
 class GaussianBlurFilter(Filter):
     def __init__(self, params):
+        if "window" not in params:
+            raise ValueError("must specify window for Gaussian blur")
+
+        if "sigma" not in params:
+            raise ValueError("must specify sigma for Gaussian blur")
+
         self.window = params["window"]
         self.sigma = params["sigma"]
 
-        if "window" not in params:
-            raise ValueError ("must specify window for Gaussian blur")
-
-        if "sigma" not in params:
-            raise ValueError ("must specify sigma for Gaussian blur")
-                        
         if not isinstance(self.window, int) or self.window <= 0 or self.window % 2 == 0:
-            raise ValueError("window must be possitive and odd")
+            raise ValueError("window must be positive and odd")
 
         if self.sigma <= 0:
             raise ValueError("sigma must be positive")
@@ -72,12 +73,13 @@ class InvertFilter(Filter):
 
 
 class ContrastFilter(Filter):
-    def __init__(self,params):
+    def __init__(self, params):
+        if "factor" not in params:
+            raise ValueError("must specify contrast factor")
+
         self.factor = params["factor"]
 
-        if "factor" not in params:
-            raise ValueError ("must specify contrast factor")
-        if self.factor <0:
+        if self.factor < 0:
             raise ValueError("factor must be greater than or equal to 0")
         
         
