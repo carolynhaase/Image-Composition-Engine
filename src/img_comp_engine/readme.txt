@@ -8,3 +8,9 @@ layers in different ways.  The program will automatically read the config file a
 the desired combination of features to create an output image.  This image will automatically
 be saved into the output folder. 
 
+To use the additional filters (from the other team) simply disactivate the original filters
+and activate the other team's filters in the filter.py file. Then in main.py, activate the 
+alternative .json path and disactivate the original.  Once the Thomas_config file is modified
+for the images, filters, and parameters you want, simply run the engine.py file and your 
+new image will be saved to the output folder.
+
